@@ -11,18 +11,22 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236c63ff'/><text x='50' y='68' font-size='44' font-weight='800' font-family='Segoe UI,system-ui,sans-serif' text-anchor='middle' fill='white'>AM</text></svg>">
 
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="theme-color" content="#6c63ff" />
+
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://anandgit01.github.io/" />
     <meta property="og:title" content="Anand Mathew | Backend Engineer & QA Automation" />
     <meta property="og:description" content="Backend Software Engineer & QA Automation Engineer with 3+ years of experience. Node.js, Playwright, AWS. Open to global opportunities." />
-    <meta property="og:image" content="https://drive.google.com/uc?export=view&id=1Hyv6w3tkmf5fUVE5bXaEOQeCxf3MCdUu" />
+    <meta property="og:image" content="https://anandgit01.github.io/photo.jpg" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Anand Mathew | Backend Engineer & QA Automation" />
     <meta name="twitter:description" content="Backend Software Engineer & QA Automation Engineer with 3+ years of experience. Open to global opportunities." />
-    <meta name="twitter:image" content="https://drive.google.com/uc?export=view&id=1Hyv6w3tkmf5fUVE5bXaEOQeCxf3MCdUu" />
+    <meta name="twitter:image" content="https://anandgit01.github.io/photo.jpg" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://anandgit01.github.io/" />
@@ -414,6 +418,7 @@
             padding: 5rem 2rem;
             max-width: 1100px;
             margin: 0 auto;
+            scroll-margin-top: 80px;
         }
 
         .section-tag {
@@ -559,6 +564,7 @@
         #skills {
             background: var(--bg2);
             max-width: 100%;
+            scroll-margin-top: 80px;
         }
 
         #skills>div {
@@ -831,6 +837,7 @@
         #certifications {
             background: var(--bg2);
             max-width: 100%;
+            scroll-margin-top: 80px;
         }
 
         #certifications>div {
@@ -950,6 +957,7 @@
             text-align: center;
             background: var(--bg2);
             max-width: 100%;
+            scroll-margin-top: 80px;
         }
 
         #contact>div {
@@ -1373,19 +1381,19 @@
             </div>
             <div class="hero-stats">
                 <div class="stat">
-                    <div class="stat-num">3+</div>
+                    <div class="stat-num" data-target="3" data-suffix="+">0</div>
                     <div class="stat-label">Years Experience</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-num">5+</div>
+                    <div class="stat-num" data-target="5" data-suffix="+">0</div>
                     <div class="stat-label">Certifications</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-num">4</div>
+                    <div class="stat-num" data-target="4" data-suffix="">0</div>
                     <div class="stat-label">Major Projects</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-num">10+</div>
+                    <div class="stat-num" data-target="10" data-suffix="+">0</div>
                     <div class="stat-label">Technologies</div>
                 </div>
             </div>
@@ -1402,6 +1410,7 @@
                 <img class="about-photo"
                     src="./photo.jpg"
                     alt="Anand Mathew"
+                    loading="lazy"
                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
                 <div class="about-photo-fallback">AM</div>
                 <div class="about-photo-name">Anand Mathew</div>
@@ -1915,6 +1924,27 @@
             entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
         }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
         document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+        // ── COUNTER ANIMATION ──
+        function animateCounter(el) {
+            const target = +el.dataset.target;
+            const suffix = el.dataset.suffix || '';
+            const duration = 1200;
+            const start = performance.now();
+            function tick(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - progress, 3);
+                el.textContent = Math.floor(ease * target) + suffix;
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+        const counterObserver = new IntersectionObserver(entries => {
+            entries.forEach(e => {
+                if (e.isIntersecting) { animateCounter(e.target); counterObserver.unobserve(e.target); }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.stat-num[data-target]').forEach(el => counterObserver.observe(el));
 
     </script>
 

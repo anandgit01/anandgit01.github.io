@@ -437,6 +437,23 @@
             display: block;
         }
 
+        .about-photo-fallback {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            box-shadow: 0 0 0 6px rgba(108, 99, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -2px;
+            flex-shrink: 0;
+        }
+
         .about-photo-name {
             font-size: 1rem;
             font-weight: 700;
@@ -1237,13 +1254,13 @@
                 </a>
             </div>
             <div class="hero-downloads">
-                <button class="btn-dl" onclick="window.print()">
+                <button class="btn-dl" onclick="printCV()" title="Opens print dialog — save as PDF to download">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
                         <polyline points="7 10 12 15 17 10" />
                         <line x1="12" y1="15" x2="12" y2="3" />
                     </svg>
-                    Download CV
+                    Download CV (PDF)
                 </button>
             </div>
             <div class="hero-stats">
@@ -1276,7 +1293,9 @@
             <div class="about-photo-wrap fade-up">
                 <img class="about-photo"
                     src="https://drive.google.com/uc?export=view&id=1Hyv6w3tkmf5fUVE5bXaEOQeCxf3MCdUu"
-                    alt="Anand Mathew" />
+                    alt="Anand Mathew"
+                    onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+                <div class="about-photo-fallback">AM</div>
                 <div class="about-photo-name">Anand Mathew</div>
                 <div class="about-photo-tag">Backend & QA Engineer</div>
             </div>
@@ -1660,6 +1679,15 @@
     <button id="back-to-top" aria-label="Back to top">↑</button>
 
     <script>
+        // ── PRINT CV (always in light mode) ──
+        function printCV() {
+            const html = document.documentElement;
+            const wasLight = html.classList.contains('light');
+            if (!wasLight) html.classList.add('light');
+            window.print();
+            if (!wasLight) html.classList.remove('light');
+        }
+
         // ── THEME TOGGLE ──
         const themeBtn = document.getElementById('themeToggle');
         const savedTheme = localStorage.getItem('theme');
